@@ -13,12 +13,18 @@ import torch
 class Hashmap:
     def __init__(self):
         self.mapping = {} #pair: (tensor, name)
+        self.count = 0
     
     def get_name(self, t):
         return self.mapping[(t)]
     
-    def add(self, t, name):
-        self.mapping[(t)] = name
+    def add(self, t, name = None):
+        
+        if name != None:
+           self.mapping[(t)] = name
+        else:
+           self.mapping[t] = "unnamed_tensor "+str(self.count)
+           self.count += 1
     
     def remove(self, t):
         return self.mapping.pop((t))
@@ -55,11 +61,15 @@ names = Hashmap()
 
 
 #for ease of operations
-original_multiplication = torch.Tensor.__mul__  
 def new_mul(self, other):
-    result = original_multiplication(self, other)
-    tensor_graph.add_tensor_edge(result, self)
-    tensor_graph.add_tensor_edge(result, other)
+    result = torch._C._TensorBase.__mul__(self, other) #original multiplication method
+    
+    #The Tensor Graph can have non-grad tensors as LEAVES ONLY. If requires_grad is manually changed to false,  manual operations must be done to the tree
+    if result.requires_grad == True:
+        tensor_graph.add_tensor_edge(result, self)
+        tensor_graph.add_tensor_edge(result, other)
+    
+    
     return result
 torch.Tensor.__mul__ = new_mul
 
@@ -72,9 +82,9 @@ torch.Tensor.__mul__ = new_mul
 starting = torch.tensor([1,2,3,4], dtype=float, requires_grad=True)
 names.add(starting, "starting")
 starting2 = torch.tensor([1,5,3,5], dtype=float, requires_grad=True)
-names.add(starting2, "starting2")
+names.add(starting2)
 im1 = starting * starting
-names.add(im1, "im1")
+names.add(im1)
 im2 = im1 * starting2
 names.add(im2, "im2")
 im3 = im2*im1
@@ -95,7 +105,7 @@ while(len(fringe) != 0):
     
 
     
-    if current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None:
+    if current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None or current_tensor.requires_grad == False:
         print("--------" * current_depth ,">", names.mapping[current_tensor], "LEAF TENSOR")
     else:
         print("--------" * current_depth ,">", names.mapping[current_tensor], current_tensor.grad_fn)
