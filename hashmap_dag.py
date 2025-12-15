@@ -65,6 +65,7 @@ def new_mul(self, other):
     result = torch._C._TensorBase.__mul__(self, other) #original multiplication method
     
     #The Tensor Graph can have non-grad tensors as LEAVES ONLY. If requires_grad is manually changed to false,  manual operations must be done to the tree
+    #The above is true with the actual DAG. intermediate tensors cannot have requires_grad = False.
     if result.requires_grad == True:
         tensor_graph.add_tensor_edge(result, self)
         tensor_graph.add_tensor_edge(result, other)
@@ -105,7 +106,7 @@ while(len(fringe) != 0):
     
 
     
-    if current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None or current_tensor.requires_grad == False:
+    if current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None:
         print("--------" * current_depth ,">", names.mapping[current_tensor], "LEAF TENSOR")
     else:
         print("--------" * current_depth ,">", names.mapping[current_tensor], current_tensor.grad_fn)
