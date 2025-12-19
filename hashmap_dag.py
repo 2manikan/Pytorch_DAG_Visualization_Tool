@@ -16,7 +16,11 @@ class Hashmap:
         self.count = 0
     
     def get_name(self, t):
-        return self.mapping[(t)]
+        if t in self.mapping.keys():
+            return self.mapping[(t)]
+        else:
+            self.add(t)
+            return self.mapping[t]
     
     def add(self, t, name = None):
         
@@ -39,7 +43,7 @@ class Hashmap:
 #for tensor structure and storage
 class Tensor_Graph:
     def __init__(self):
-        self.edges = {} #(result_tensor_id:[original tensor id's])
+        self.edges = {} #(result_tensor:[original tensor id's])
     
     def add_tensor_edge(self, t1, t2):
         if (t1) not in self.edges.keys():

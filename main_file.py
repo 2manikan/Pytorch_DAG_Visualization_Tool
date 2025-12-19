@@ -20,9 +20,9 @@ def display_graph(out): #out is the tensor from which the backward graph is crea
 
         
         if current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None:
-            print("--------" * current_depth ,">", names.mapping[current_tensor], "LEAF TENSOR")
+            print("--------" * current_depth ,">", names.get_name(current_tensor), "LEAF TENSOR")
         else:
-            print("--------" * current_depth ,">", names.mapping[current_tensor], current_tensor.grad_fn)
+            print("--------" * current_depth ,">", names.get_name(current_tensor), current_tensor.grad_fn)
         
         inp_tensors = tensor_graph.get_contributing_tensors(current_tensor)
         for i in inp_tensors:
