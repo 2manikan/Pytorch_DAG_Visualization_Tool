@@ -79,3 +79,14 @@ def new_matmul(self, other):
     
     return result
 torch.Tensor.__matmul__ = new_matmul
+
+
+
+
+def log_dependency(module, input, output):
+    for tensor in input: #input is a tuple of input tensors
+        tensor_graph.add_tensor_edge(output, tensor)
+
+
+
+
