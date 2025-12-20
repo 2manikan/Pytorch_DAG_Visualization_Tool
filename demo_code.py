@@ -53,7 +53,11 @@ if __name__ == "__main__":
     
     
     result = layer3(layer2(layer1(inp)))
-    display_graph(result)
+    loss = result * 2
+    
+    
+    
+    display_graph(loss)
     
     
     

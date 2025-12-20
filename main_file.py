@@ -18,8 +18,9 @@ def display_graph(out): #out is the tensor from which the backward graph is crea
         current_tensor, current_depth = fringe.pop()
         
 
-        
-        if current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None:
+        if current_tensor.__class__.__name__ != "Tensor":
+            print("--------" * current_depth ,">", current_tensor, "LEAF TENSOR")  #must remove integer from hashmap in future
+        elif current_tensor.grad_fn.__class__.__name__ == 'AccumulateGrad' or current_tensor.grad_fn == None:
             print("--------" * current_depth ,">", names.get_name(current_tensor), "LEAF TENSOR")
         else:
             print("--------" * current_depth ,">", names.get_name(current_tensor), current_tensor.grad_fn)
