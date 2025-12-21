@@ -36,8 +36,7 @@ Pytorch_DAG_Visualization_Tool <br>
 No installation required. Clone the repo, run demo.py, and see it work. The commands in demo.py can be used in any file you wish afterward. <br> <br>
 
 # What’s Next? <br>
-- Extend operation coverage (e.g., convolutional layers, custom autograd Functions). <br>
-- Export graph to DOT format for visual rendering. <br>
-- Add optional PyTorch Module-level tracing. <br>
+- Extend operation coverage (e.g., custom autograd Functions). <br>
+- Packaging refinement
 
 Contributions, ideas, and feedback are warmly welcomed. Thank you!
