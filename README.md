@@ -27,7 +27,7 @@ To use the tool: <br> <br>
 3. Visualize from any tensor with display_graph(tensor) to see a clean, indented tree of its dependencies. <br>
 Please see the demonstration file for more information on syntax. <br> <br>
 
-#Project Structure <br>
+# Project Structure <br>
 Pytorch_DAG_Visualization_Tool <br>
 ├── hashmap_dag.py           # Core graph & hashmap structures <br>
 ├── modified_functions_tensor_operations.py  # Automatic operation tracking <br>
@@ -35,7 +35,7 @@ Pytorch_DAG_Visualization_Tool <br>
 └── demo.py                  # Example usage (run this first!) <br>
 No installation required. Clone the repo, run demo.py, and see it work. The commands in demo.py can be used in any file you wish afterward. <br> <br>
 
-What’s Next? <br>
+# What’s Next? <br>
 - Extend operation coverage (e.g., convolutional layers, custom autograd Functions). <br>
 - Export graph to DOT format for visual rendering. <br>
 - Add optional PyTorch Module-level tracing. <br>
